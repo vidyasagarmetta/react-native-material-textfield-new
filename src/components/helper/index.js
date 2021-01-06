@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Animated, ViewPropTypes } from 'react-native';
+import { Animated, Text } from 'react-native';
 
 import styles from './styles';
 
@@ -11,7 +11,7 @@ export default class Helper extends PureComponent {
 
     disabled: PropTypes.bool,
 
-    style: ViewPropTypes.style,
+    style: Text.propTypes.style,
 
     baseColor: PropTypes.string,
     errorColor: PropTypes.string,
@@ -56,6 +56,14 @@ export default class Helper extends PureComponent {
 
     if (this.animationValue < -0.5 && value >= -0.5) {
       this.setState({ errored: false });
+    }
+
+    /**
+     * Fix for issue #268
+     * https://github.com/n4kz/react-native-material-textfield/issues/268
+     */
+    if (typeof this.animationValue === 'undefined' && value === -1) {
+      this.setState({ errored: true })
     }
 
     this.animationValue = value;
