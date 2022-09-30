@@ -17,8 +17,9 @@
 [![travis][travis-badge]][travis-url]
 [![codeclimate][codeclimate-badge]][codeclimate-url]
 
-Material texfield with consistent behaviour on iOS and Android
-This package is a cloned version of react-native-material-textfield. I've added few fixes to the package.
+Material texfield with consistent behaviour on iOS and Android.
+
+**This package is a cloned version of react-native-material-textfield. I've added few fixes to the package.**
 
 ![example][example-url]
 
