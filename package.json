@@ -1,6 +1,6 @@
 {
   "name": "react-native-material-textfield-new",
-  "version": "0.17.0",
+  "version": "0.17.2",
   "license": "BSD-3-Clause",
   "author": "Sriram <no-reply@sriram.io>",
   "description": "Material textfield",
@@ -32,7 +32,7 @@
     "url": "git://github.com/sriram10/react-native-material-textfield.git"
   },
   "dependencies": {
-    "prop-types": "^15.5.9"
+    "prop-types": "^15.8.1"
   },
   "peerDependencies": {
     "react": ">=16.3.0",
