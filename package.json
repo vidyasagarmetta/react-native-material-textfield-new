@@ -1,8 +1,8 @@
 {
   "name": "react-native-material-textfield-new",
-  "version": "0.16.3",
+  "version": "0.16.4",
   "license": "BSD-3-Clause",
-  "author": "Alexander Nazarov <n4kz@n4kz.com>",
+  "author": "Sriram <no-reply@sriram.io>",
 
   "description": "Material textfield",
   "keywords": [

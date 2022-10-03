@@ -1,9 +1,9 @@
 [npm-badge]: https://img.shields.io/npm/v/react-native-material-textfield.svg?colorB=ff6d00
-[npm-url]: https://npmjs.com/package/react-native-material-textfield
+[npm-url]: https://npmjs.com/package/react-native-material-textfield-new
 [license-badge]: https://img.shields.io/npm/l/react-native-material-textfield.svg?colorB=448aff
 [license-url]: https://raw.githubusercontent.com/n4kz/react-native-material-textfield/master/license.txt
 [travis-badge]: https://api.travis-ci.org/n4kz/react-native-material-textfield.svg?branch=master
-[travis-url]: https://travis-ci.org/n4kz/react-native-material-textfield?branch=master
+[travis-url]: https://travis-ci.org/sriram10/react-native-material-textfield-new?branch=master
 [codeclimate-badge]: https://img.shields.io/codeclimate/maintainability/n4kz/react-native-material-textfield.svg
 [codeclimate-url]: https://codeclimate.com/github/n4kz/react-native-material-textfield
 [example-url]: https://cloud.githubusercontent.com/assets/2055622/24325711/eaa4ff08-11af-11e7-8550-2504c1580979.gif

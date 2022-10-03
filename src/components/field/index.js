@@ -82,6 +82,14 @@ export default class TextField extends PureComponent {
       bottom: PropTypes.number,
     }),
 
+    value: PropTypes.arrayOf(PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ])) || PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+
     labelOffset: Label.propTypes.offset,
 
     labelTextStyle: Text.propTypes.style,
@@ -113,6 +121,7 @@ export default class TextField extends PureComponent {
 
     renderLeftAccessory: PropTypes.func,
     renderRightAccessory: PropTypes.func,
+    renderAccessory: PropTypes.func,
 
     prefix: PropTypes.string,
     suffix: PropTypes.string,
@@ -209,6 +218,10 @@ export default class TextField extends PureComponent {
   componentDidUpdate(prevProps, prevState) {
     let errorState = errorStateFromProps(this.props);
     let prevErrorState = errorStateFromProps(prevProps);
+
+    if (this.state.text != this.props.value) {
+      this.setState({ text: this.props.value });
+    }
 
     if (errorState ^ prevErrorState) {
       this.startFocusAnimation();
@@ -528,7 +541,7 @@ export default class TextField extends PureComponent {
   }
 
   renderAccessory(prop) {
-    let { [prop]: renderAccessory } = this.props;
+    let { renderAccessory } = this.props;
 
     return 'function' === typeof renderAccessory?
       renderAccessory():
@@ -616,6 +629,7 @@ export default class TextField extends PureComponent {
       editable,
       tintColor,
       style: inputStyleOverrides,
+      textInputStyle,
     } = this.props;
 
     let props = this.inputProps();
@@ -627,7 +641,7 @@ export default class TextField extends PureComponent {
 
         {...props}
 
-        style={[styles.input, inputStyle, inputStyleOverrides]}
+        style={[styles.input, inputStyle, inputStyleOverrides, textInputStyle]}
         editable={!disabled && editable}
         onChange={this.onChange}
         onChangeText={this.onChangeText}
@@ -713,7 +727,7 @@ export default class TextField extends PureComponent {
       <View {...containerProps}>
         <Animated.View {...inputContainerProps}>
           {this.renderLine(lineProps)}
-          {this.renderAccessory('renderLeftAccessory')}
+          {/* {this.renderAccessory('renderLeftAccessory')} */}
 
           <View style={styles.stack}>
             {this.renderLabel(styleProps)}
