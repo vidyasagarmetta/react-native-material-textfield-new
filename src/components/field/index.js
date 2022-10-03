@@ -80,7 +80,7 @@ export default class TextField extends PureComponent {
       right: PropTypes.number,
     }),
 
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, undefined]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 
     labelOffset: Label.propTypes.offset,
 
