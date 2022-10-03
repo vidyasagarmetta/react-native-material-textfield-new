@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Animated, Text } from 'react-native';
+import { Animated } from 'react-native';
 
 import styles from './styles';
 
@@ -8,10 +8,11 @@ export default class Helper extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
     error: PropTypes.string,
+    testId: PropTypes.string,
 
     disabled: PropTypes.bool,
 
-    style: Text.propTypes.style,
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
 
     baseColor: PropTypes.string,
     errorColor: PropTypes.string,
@@ -78,6 +79,7 @@ export default class Helper extends PureComponent {
       disabled,
       baseColor,
       errorColor,
+      testId,
     } = this.props;
 
     let text = errored?
@@ -97,7 +99,7 @@ export default class Helper extends PureComponent {
     };
 
     return (
-      <Animated.Text style={[styles.text, style, textStyle]}>
+      <Animated.Text testID={testId || undefined} style={[styles.text, style, textStyle]}>
         {text}
       </Animated.Text>
     );

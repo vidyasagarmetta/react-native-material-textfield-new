@@ -9,8 +9,10 @@
 [example-url]: https://cloud.githubusercontent.com/assets/2055622/24325711/eaa4ff08-11af-11e7-8550-2504c1580979.gif
 [rn-textinput]: https://facebook.github.io/react-native/docs/textinput.html#props
 [md-textfield]: https://material.io/guidelines/components/text-fields.html
+[yalc-url]: https://github.com/whitecolor/yalc
 
 # react-native-material-textfield-new
+## Supports Latest react-native version 0.70.*
 
 [![npm][npm-badge]][npm-url]
 [![license][license-badge]][license-url]
@@ -105,6 +107,7 @@ class Example extends Component {
  suffix                | Text field suffix text                      |   String | -
  error                 | Text field error text                       |   String | -
  errorColor            | Text field color for errored state          |   String | rgb(213, 0, 0)
+ errorTestId           | Text field error testID                     |   String | -
  lineType              | Text field line type                        |   String | solid
  disabledLineType      | Text field line type in disabled state      |   String | dotted
  animationDuration     | Text field animation duration in ms         |   Number | 225
@@ -162,17 +165,22 @@ Other [TextInput][rn-textinput] properties will also work.
  isPlaceholderVisible() | Get placeholder visibility    | Boolean
  setValue()             | Set current value             |       -
 
-## Example
+## Example - (Development)
+We are using [Yalc][yalc-url] to manage local dependency for development.
 
 ```bash
 git clone https://github.com/sriram10/react-native-material-textfield-new
-cd react-native-material-textfield-new/example
-npm install
-npm run ios # or npm run android
+
+cd react-native-material-textfield-new
+yarn
+npx yarn publish
+cd exampleApp
+npx yalc add react-native-material-textfield-new
+yarn
+yarn ios # or yarn android
 ```
 
 ## Copyright and License
 
 BSD License
-
-Copyright 2017-2019 Alexander Nazarov. All rights reserved.
+Copyright 2022 Sriram. All rights reserved.

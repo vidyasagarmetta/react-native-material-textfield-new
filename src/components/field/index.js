@@ -2,12 +2,10 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import {
   View,
-  Text,
   TextInput,
   Animated,
   StyleSheet,
   Platform,
-  ViewPropTypes,
 } from 'react-native';
 
 import Line from '../line';
@@ -25,10 +23,10 @@ function startAnimation(animation, options, callback) {
 }
 
 function labelStateFromProps(props, state) {
-  let { placeholder, defaultValue } = props;
+  let { placeholder, defaultValue, disableLabelAnimation } = props;
   let { text, receivedFocus } = state;
 
-  return !!(placeholder || text || (!receivedFocus && defaultValue));
+  return !!(placeholder || text || (!receivedFocus && defaultValue) || disableLabelAnimation);
 }
 
 function errorStateFromProps(props, state) {
@@ -69,6 +67,7 @@ export default class TextField extends PureComponent {
     ...TextInput.propTypes,
 
     animationDuration: PropTypes.number,
+    animationOffset: PropTypes.number,
 
     fontSize: PropTypes.number,
     labelFontSize: PropTypes.number,
@@ -79,34 +78,28 @@ export default class TextField extends PureComponent {
       input: PropTypes.number,
       left: PropTypes.number,
       right: PropTypes.number,
-      bottom: PropTypes.number,
     }),
 
-    value: PropTypes.arrayOf(PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ])) || PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, undefined]),
 
     labelOffset: Label.propTypes.offset,
 
-    labelTextStyle: Text.propTypes.style,
-    titleTextStyle: Text.propTypes.style,
-    affixTextStyle: Text.propTypes.style,
+    labelTextStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+    titleTextStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+    affixTextStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
 
     tintColor: PropTypes.string,
     textColor: PropTypes.string,
     baseColor: PropTypes.string,
 
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     title: PropTypes.string,
 
     characterRestriction: PropTypes.number,
 
     error: PropTypes.string,
     errorColor: PropTypes.string,
+    errorTestId: PropTypes.string,
 
     lineWidth: PropTypes.number,
     activeLineWidth: PropTypes.number,
@@ -119,27 +112,32 @@ export default class TextField extends PureComponent {
 
     formatText: PropTypes.func,
 
-    renderLeftAccessory: PropTypes.func,
-    renderRightAccessory: PropTypes.func,
-    renderAccessory: PropTypes.func,
+    renderLeftAccessory: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    renderRightAccessory: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 
     prefix: PropTypes.string,
     suffix: PropTypes.string,
 
-    containerStyle: (ViewPropTypes || View.propTypes).style,
-    inputContainerStyle: (ViewPropTypes || View.propTypes).style,
+    containerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+    inputContainerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
   };
 
   static inputContainerStyle = styles.inputContainer;
 
-  static contentInset = {
+  static _contentInset = {
     top: 16,
     label: 4,
     input: 8,
     left: 0,
     right: 0,
-    bottom: 8,
   };
+
+  contentInset() {
+    return {
+      ...TextField._contentInset,
+      ...(this.props.contentInset || {}),
+    }
+  }
 
   static labelOffset = {
     x0: 0,
@@ -149,17 +147,17 @@ export default class TextField extends PureComponent {
   };
 
   static getDerivedStateFromProps({ error, value }, state) {
-    let newState = {}
+    let update = {};
     /* Keep last received error in state */
     if (error && error !== state.error) {
-      newState.error = error;
+      update.error = error;
     }
-
+    /* Keep last value in state */
     if (value !== state.text) {
-      newState.text = value;
+      update.text = value;
     }
 
-    return newState;
+    return update;
   }
 
   constructor(props) {
@@ -173,7 +171,6 @@ export default class TextField extends PureComponent {
     this.onContentSizeChange = this.onContentSizeChange.bind(this);
     this.onFocusAnimationEnd = this.onFocusAnimationEnd.bind(this);
 
-    this.createGetter('contentInset');
     this.createGetter('labelOffset');
 
     this.inputRef = React.createRef();
@@ -219,10 +216,6 @@ export default class TextField extends PureComponent {
     let errorState = errorStateFromProps(this.props);
     let prevErrorState = errorStateFromProps(prevProps);
 
-    if (this.state.text != this.props.value) {
-      this.setState({ text: this.props.value });
-    }
-
     if (errorState ^ prevErrorState) {
       this.startFocusAnimation();
     }
@@ -250,13 +243,16 @@ export default class TextField extends PureComponent {
 
   startLabelAnimation() {
     let { labelAnimation } = this.state;
-    let { animationDuration: duration } = this.props;
+    let { animationDuration: duration, disableLabelAnimation } = this.props;
+
+    if (disableLabelAnimation) {
+      return;
+    }
 
     let options = {
       toValue: this.labelState(),
       useNativeDriver: true,
       duration,
-      useNativeDriver: false,
     };
 
     startAnimation(labelAnimation, options);
@@ -513,13 +509,14 @@ export default class TextField extends PureComponent {
   }
 
   renderLabel(props) {
-    let offset = this.labelOffset();
 
     let {
       label,
       fontSize,
       labelFontSize,
       labelTextStyle,
+      // animationOffset,
+      // halfWidth,
     } = this.props;
 
     return (
@@ -527,7 +524,6 @@ export default class TextField extends PureComponent {
         {...props}
         fontSize={fontSize}
         activeFontSize={labelFontSize}
-        offset={offset}
         label={label}
         style={labelTextStyle}
       />
@@ -540,12 +536,18 @@ export default class TextField extends PureComponent {
     );
   }
 
-  renderAccessory(prop) {
+  renderAccessory() {
     let { renderAccessory } = this.props;
 
-    return 'function' === typeof renderAccessory?
-      renderAccessory():
-      null;
+    if ('function' !== typeof renderAccessory) {
+      return null;
+    }
+
+    return (
+      <View style={styles.accessory}>
+        {renderAccessory()}
+      </View>
+    );
   }
 
   renderAffix(type) {
@@ -582,6 +584,7 @@ export default class TextField extends PureComponent {
       disabled,
       baseColor,
       errorColor,
+      errorTestId,
       titleTextStyle: style,
       characterRestriction: limit,
     } = this.props;
@@ -592,7 +595,6 @@ export default class TextField extends PureComponent {
     let containerStyle =  {
       paddingLeft: contentInset.left,
       paddingRight: contentInset.right,
-      minHeight: contentInset.bottom,
     };
 
     let styleProps = {
@@ -611,6 +613,7 @@ export default class TextField extends PureComponent {
       ...styleProps,
       title,
       error,
+      testId: errorTestId,
       disabled,
       focusAnimation,
     };
@@ -629,7 +632,6 @@ export default class TextField extends PureComponent {
       editable,
       tintColor,
       style: inputStyleOverrides,
-      textInputStyle,
     } = this.props;
 
     let props = this.inputProps();
@@ -641,7 +643,7 @@ export default class TextField extends PureComponent {
 
         {...props}
 
-        style={[styles.input, inputStyle, inputStyleOverrides, textInputStyle]}
+        style={[styles.input, inputStyle, inputStyleOverrides]}
         editable={!disabled && editable}
         onChange={this.onChange}
         onChangeText={this.onChangeText}
@@ -668,6 +670,8 @@ export default class TextField extends PureComponent {
       baseColor,
       errorColor,
       containerStyle,
+      renderLeftAccessory,
+      renderRightAccessory,
       inputContainerStyle: inputContainerStyleOverrides,
     } = this.props;
 
@@ -727,7 +731,7 @@ export default class TextField extends PureComponent {
       <View {...containerProps}>
         <Animated.View {...inputContainerProps}>
           {this.renderLine(lineProps)}
-          {/* {this.renderAccessory('renderLeftAccessory')} */}
+          {renderLeftAccessory ? this.renderAccessory('renderLeftAccessory') : null}
 
           <View style={styles.stack}>
             {this.renderLabel(styleProps)}
@@ -739,7 +743,7 @@ export default class TextField extends PureComponent {
             </View>
           </View>
 
-          {this.renderAccessory('renderRightAccessory')}
+          {renderRightAccessory ? this.renderAccessory('renderRightAccessory'): null}
         </Animated.View>
 
         {this.renderHelper()}
