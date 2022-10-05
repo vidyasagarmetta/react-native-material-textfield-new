@@ -15,8 +15,8 @@
 
 [![npm][npm-badge]][npm-url]
 [![license][license-badge]][license-url]
-<!-- [![travis][travis-badge]][travis-url] -->
 [![codeclimate][codeclimate-badge]][codeclimate-url]
+<!-- [![travis][travis-badge]][travis-url] -->
 
 ## Supports Latest react-native version 0.70.*
 Material texfield with consistent behaviour on iOS and Android.
