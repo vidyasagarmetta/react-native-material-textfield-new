@@ -1,24 +1,24 @@
-[npm-badge]: https://img.shields.io/npm/v/react-native-material-textfield.svg?colorB=ff6d00
+[npm-badge]: https://img.shields.io/npm/v/react-native-material-textfield-new.svg?colorB=ff6d00
 [npm-url]: https://npmjs.com/package/react-native-material-textfield-new
-[license-badge]: https://img.shields.io/npm/l/react-native-material-textfield.svg?colorB=448aff
-[license-url]: https://raw.githubusercontent.com/n4kz/react-native-material-textfield/master/license.txt
-[travis-badge]: https://api.travis-ci.org/n4kz/react-native-material-textfield.svg?branch=master
-[travis-url]: https://travis-ci.org/sriram10/react-native-material-textfield-new?branch=master
-[codeclimate-badge]: https://img.shields.io/codeclimate/maintainability/n4kz/react-native-material-textfield.svg
-[codeclimate-url]: https://codeclimate.com/github/n4kz/react-native-material-textfield
+[license-badge]: https://img.shields.io/npm/l/react-native-material-textfield-new.svg?colorB=448aff
+[license-url]: https://raw.githubusercontent.com/sriram10/react-native-material-textfield-new/master/license.txt
+<!-- [travis-badge]: https://api.travis-ci.org/n4kz/react-native-material-textfield.svg?branch=master
+[travis-url]: https://travis-ci.org/sriram10/react-native-material-textfield-new?branch=master -->
+[codeclimate-badge]: https://img.shields.io/codeclimate/maintainability/sriram10/react-native-material-textfield-new.svg
+[codeclimate-url]: https://codeclimate.com/github/sriram10/react-native-material-textfield-new
 [example-url]: https://cloud.githubusercontent.com/assets/2055622/24325711/eaa4ff08-11af-11e7-8550-2504c1580979.gif
 [rn-textinput]: https://facebook.github.io/react-native/docs/textinput.html#props
 [md-textfield]: https://material.io/guidelines/components/text-fields.html
 [yalc-url]: https://github.com/whitecolor/yalc
 
 # react-native-material-textfield-new
-## Supports Latest react-native version 0.70.*
 
 [![npm][npm-badge]][npm-url]
 [![license][license-badge]][license-url]
-[![travis][travis-badge]][travis-url]
+<!-- [![travis][travis-badge]][travis-url] -->
 [![codeclimate][codeclimate-badge]][codeclimate-url]
 
+## Supports Latest react-native version 0.70.*
 Material texfield with consistent behaviour on iOS and Android.
 
 **This package is a cloned version of react-native-material-textfield. I've added few fixes to the package.**
@@ -184,3 +184,6 @@ yarn ios # or yarn android
 
 BSD License
 Copyright 2022 Sriram. All rights reserved.
+
+## Credits
+Thanks to Alexander Nazarov for creating this awesome library.
