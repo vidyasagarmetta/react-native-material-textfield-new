@@ -536,18 +536,14 @@ export default class TextField extends PureComponent {
     );
   }
 
-  renderAccessory() {
-    let { renderAccessory } = this.props;
+  renderAccessory(accessoryType) {
+    let { [accessoryType]: renderAccessory } = this.props;
 
-    if ('function' !== typeof renderAccessory) {
-      return null;
-    }
-
-    return (
+    return 'function' === typeof renderAccessory ? (
       <View style={styles.accessory}>
         {renderAccessory()}
       </View>
-    );
+    ) : null;
   }
 
   renderAffix(type) {
@@ -670,8 +666,6 @@ export default class TextField extends PureComponent {
       baseColor,
       errorColor,
       containerStyle,
-      renderLeftAccessory,
-      renderRightAccessory,
       inputContainerStyle: inputContainerStyleOverrides,
     } = this.props;
 
@@ -731,7 +725,7 @@ export default class TextField extends PureComponent {
       <View {...containerProps}>
         <Animated.View {...inputContainerProps}>
           {this.renderLine(lineProps)}
-          {renderLeftAccessory ? this.renderAccessory('renderLeftAccessory') : null}
+          {this.renderAccessory('renderLeftAccessory')}
 
           <View style={styles.stack}>
             {this.renderLabel(styleProps)}
@@ -743,7 +737,7 @@ export default class TextField extends PureComponent {
             </View>
           </View>
 
-          {renderRightAccessory ? this.renderAccessory('renderRightAccessory'): null}
+          {this.renderAccessory('renderRightAccessory')}
         </Animated.View>
 
         {this.renderHelper()}
