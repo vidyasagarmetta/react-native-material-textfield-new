@@ -97,7 +97,7 @@ export default class Label extends PureComponent {
       transform: [{
         translateX: labelAnimation.interpolate({
           inputRange: [0, 1],
-          outputRange: [x0, -xScaleCompensation],
+          outputRange: [x0, -(xScaleCompensation - x1)],
         }),
       }, {
         scale: labelAnimation.interpolate({
