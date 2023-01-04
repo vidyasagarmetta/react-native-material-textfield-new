@@ -628,6 +628,8 @@ export default class TextField extends PureComponent {
       disabled,
       editable,
       tintColor,
+      secureTextEntry,
+      keyboardType = 'default',
       style: inputStyleOverrides,
     } = this.props;
 
@@ -649,6 +651,8 @@ export default class TextField extends PureComponent {
         onBlur={this.onBlur}
         value={this.value()}
         ref={this.inputRef}
+        secureTextEntry={secureTextEntry}
+        keyboardType={keyboardType}
       />
     );
   }
